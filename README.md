@@ -9,7 +9,7 @@
 
 > Who can play Dark?
 
-- ~Anyone.~ Actually, probably anyone over the age of 5. Children may find this game a little scary. 
+- ~Anyone.~ Actually, probably anyone over the age of 5.
 
 > What's the story behind the creation of Dark?
 
@@ -19,11 +19,6 @@
 ### User Stories
 
 - As a user, I want to be able to choose from the options presented in the main menu
-- As a user, I want to be able to choose from the levels presented in the play menu
-- As a user, I want to be able to view my level in the game
 - As a user, I want to be able to move in a specified direction (up/down/left/right)
-- As a user, I want to be able to collect items and add them to my item pouch
-- As a user, I want to be able to view the items in my item pouch
-- As a user, I want to be able to interact with and/or use items 
+- As a user, I want to be able to collect items, add them to my item pouch, and view them
 - As a user, I want to be able to type in passwords whenever necessary
-- As a user, I want to be able to quit the game if it gets too scary
