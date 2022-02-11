@@ -10,16 +10,91 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PlayerTest {
 
     private Player testPlayer;
+    private Tile tileMiddle;
+    private Tile tileUp;
+    private Tile tileDown;
+    private Tile tileLeft;
+    private Tile tileRight;
 
     @BeforeEach
     void runBefore() {
-        testPlayer = new Player();
+        tileMiddle = new Tile("middle");
+        tileUp = new Tile("up");
+        tileDown = new Tile("down");
+        tileLeft = new Tile("left");
+        tileRight = new Tile("right");
+        tileMiddle.setUp(tileUp);
+        tileMiddle.setDown(tileDown);
+        tileMiddle.setLeft(tileLeft);
+        tileMiddle.setRight(tileRight);
+        tileUp.setDown(tileMiddle);
+        tileDown.setUp(tileMiddle);
+        tileLeft.setRight(tileMiddle);
+        tileRight.setLeft(tileMiddle);
+        testPlayer = new Player(tileMiddle);
     }
 
     @Test
     void testPlayer() {
-        assertEquals(1, testPlayer.getLevel());
+        assertEquals(tileMiddle, testPlayer.getLocation());
         assertTrue(testPlayer.getItemPouch().isEmpty());
+    }
+
+    @Test
+    void testMoveUp() {
+        testPlayer.move("up");
+        assertEquals(tileUp, testPlayer.getLocation());
+    }
+
+    @Test
+    void testMoveDown() {
+        testPlayer.move("down");
+        assertEquals(tileDown, testPlayer.getLocation());
+    }
+
+    @Test
+    void testMoveLeft() {
+        testPlayer.move("left");
+        assertEquals(tileLeft, testPlayer.getLocation());
+    }
+
+    @Test
+    void testMoveRight() {
+        testPlayer.move("right");
+        assertEquals(tileRight, testPlayer.getLocation());
+    }
+
+    @Test
+    void testMove() {
+        testPlayer.move("up");
+        assertEquals(tileUp, testPlayer.getLocation());
+        testPlayer.move("down");
+        assertEquals(tileMiddle, testPlayer.getLocation());
+        testPlayer.move("down");
+        assertEquals(tileDown, testPlayer.getLocation());
+        testPlayer.move("up");
+        assertEquals(tileMiddle, testPlayer.getLocation());
+        testPlayer.move("left");
+        assertEquals(tileLeft, testPlayer.getLocation());
+        testPlayer.move("right");
+        assertEquals(tileMiddle, testPlayer.getLocation());
+        testPlayer.move("right");
+        assertEquals(tileRight, testPlayer.getLocation());
+        testPlayer.move("left");
+        assertEquals(tileMiddle, testPlayer.getLocation());
+    }
+
+    @Test
+    void testAddItemToPouch() {
+        Item itemA = new Item();
+        Item itemB = new Item();
+        testPlayer.addItemToPouch(itemA);
+        assertEquals(itemA, testPlayer.getItemPouch().get(0));
+        assertEquals(1, testPlayer.getItemPouch().size());
+        testPlayer.addItemToPouch(itemB);
+        assertEquals(itemA, testPlayer.getItemPouch().get(0));
+        assertEquals(itemB, testPlayer.getItemPouch().get(1));
+        assertEquals(2, testPlayer.getItemPouch().size());
     }
 
 }

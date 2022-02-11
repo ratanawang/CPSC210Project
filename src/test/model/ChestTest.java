@@ -21,6 +21,7 @@ public class ChestTest {
     void testChest() {
         assertEquals(item, testChest.getItem());
         assertEquals("id_abc", testChest.getId());
+        assertEquals("locked", testChest.getStatus());
     }
 
 }

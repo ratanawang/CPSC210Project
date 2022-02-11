@@ -39,6 +39,7 @@ public class KeyTest {
         Item i = new Item();
         Chest c = new Chest(i, "id_abc");
         assertEquals(i, testKey.openChest(c));
+        assertEquals("unlocked", c.getStatus());
     }
 
 }

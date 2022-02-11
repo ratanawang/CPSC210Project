@@ -8,31 +8,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // Unit tests for the Tile class
 public class TileTest {
 
-    private Tile testTile;
-    private MazeStructure up;
-    private MazeStructure down;
-    private MazeStructure left;
-    private MazeStructure right;
+    private Tile testTileA;
+    private Tile testTileB;
     private Item item;
 
     @BeforeEach
     void runBefore() {
-        up = new MazeStructure();
-        down = new MazeStructure();
-        left = new MazeStructure();
-        right = new MazeStructure();
         item = new Item();
-        testTile = new Tile(up, down, left, right, item, "id_abc");
+        testTileA = new Tile(item, "id_abc");
+        testTileB = new Tile("id_xyz");
     }
 
     @Test
-    void testTile() {
-        assertEquals(up, testTile.getUp());
-        assertEquals(down, testTile.getDown());
-        assertEquals(left, testTile.getLeft());
-        assertEquals(right, testTile.getRight());
-        assertEquals(item, testTile.getItem());
-        assertEquals("id_abc", testTile.getId());
+    void testTileWithItem() {
+        assertEquals(item, testTileA.getItem());
+        assertEquals("id_abc", testTileA.getId());
+    }
+
+    @Test
+    void testTileWithoutItem() {
+        assertEquals("id_xyz", testTileB.getId());
     }
 
 }

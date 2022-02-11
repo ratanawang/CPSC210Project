@@ -6,7 +6,6 @@ package model;
 public class Exit extends MazeStructure {
 
     private String password;
-    private String id;
 
     // Constructs an exit
     // EFFECTS: creates an exit with a password and ID
@@ -17,10 +16,6 @@ public class Exit extends MazeStructure {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getId() {
-        return id;
     }
 
 }

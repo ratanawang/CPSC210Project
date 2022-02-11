@@ -18,8 +18,11 @@ public class Key extends Item {
     }
 
     // REQUIRES: canOpenChest == true
+    // MODIFIES: chest
     // EFFECTS: gets the item within the chest
+    // and changes its status to "unlocked"
     public Item openChest(Chest chest) {
+        chest.setStatus("unlocked");
         return chest.getItem();
     }
 
