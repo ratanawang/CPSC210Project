@@ -21,7 +21,7 @@
 - As a user, I want to be able to choose from the options presented in the main menu
 - As a user, I want to be able to choose from the levels presented in the play menu
 - As a user, I want to be able to view my level in the game
-- As a user, I want to be able tomove in a specified direction (up/down/left/right)
+- As a user, I want to be able to move in a specified direction (up/down/left/right)
 - As a user, I want to be able to collect items and add them to my item pouch
 - As a user, I want to be able to view the items in my item pouch
 - As a user, I want to be able to interact with and/or use items 
