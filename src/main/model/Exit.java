@@ -7,7 +7,6 @@ public class Exit extends MazeStructure {
 
     private String password;
 
-    // Constructs an exit
     // EFFECTS: creates an exit with a password and ID
     public Exit(String password, String id) {
         this.password = password;

@@ -7,7 +7,6 @@ public class Chest extends MazeStructure {
     private Item item;
     private String status;
 
-    // Constructs a chest
     // EFFECTS: creates a locked chest with an item and an ID
     public Chest(Item item, String id) {
         this.item = item;

@@ -6,7 +6,6 @@ public class Clue extends Item {
 
     private String info;
 
-    // Constructs a clue
     // EFFECTS: creates a clue with the given information
     public Clue(String info) {
         this.info = info;

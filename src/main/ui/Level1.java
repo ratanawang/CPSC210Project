@@ -2,6 +2,8 @@ package ui;
 
 import model.*;
 
+// Represents the set-up for level 1, including
+// all of its structural features.
 public class Level1 extends Level {
 
     private Chest ch0;
@@ -15,6 +17,9 @@ public class Level1 extends Level {
     private Tile t5;
     private Tile t6;
 
+    // Constructs the level
+    // EFFECTS: creates a Level1() object, which also
+    // initializes the key, clue, player, and creates the maze
     public Level1() {
         System.out.println("You are now playing Level 1.");
         k0 = new Key("c_3_1");
@@ -25,6 +30,8 @@ public class Level1 extends Level {
         nextStep();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes each maze structure
     protected void constructMaze() {
         t0 = new Tile("t_1_1");
         t1 = new Tile("t_1_2");
@@ -37,6 +44,8 @@ public class Level1 extends Level {
         exit = new Exit("0210", "e_3_3");
     }
 
+    // MODIFIES: this
+    // EFFECTS: establishes the relationships between maze structures
     protected void connectMaze() {
         t0.setDown(t3);
         t0.setRight(t1);

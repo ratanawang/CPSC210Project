@@ -14,6 +14,9 @@ public abstract class MazeStructure {
     protected MazeStructure right;
     protected String id;
 
+    // REQUIRES: up, down, left, and right are not null
+    // MODIFIES: this
+    // EFFECTS: sets the surrounding maze structures
     public void setAllDirections(MazeStructure up, MazeStructure down, MazeStructure left, MazeStructure right) {
         this.up = up;
         this.down = down;

@@ -1,22 +1,18 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // A player represents the player's current
 // state within the game. It has a level and
 // an item pouch.
 public class Player {
 
-    private List<Item> itemPouch;
+    private ItemPouch itemPouch;
     private MazeStructure location;
 
-    // Constructs a player
     // EFFECTS: creates a player at the given location
     // and an empty item pouch
     public Player(MazeStructure location) {
         this.location = location;
-        this.itemPouch = new ArrayList<>();
+        this.itemPouch = new ItemPouch();
     }
 
     // REQUIRES: dir is one of "up", "down", "left", or "right",
@@ -44,14 +40,14 @@ public class Player {
     // MODIFIES: this
     // EFFECTS: adds item to item pouch
     public void addItemToPouch(Item i) {
-        itemPouch.add(i);
+        itemPouch.addItem(i);
     }
 
     public MazeStructure getLocation() {
         return location;
     }
 
-    public List<Item> getItemPouch() {
+    public ItemPouch getItemPouch() {
         return itemPouch;
     }
 

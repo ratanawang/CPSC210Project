@@ -37,7 +37,7 @@ class PlayerTest {
     @Test
     void testPlayer() {
         assertEquals(tileMiddle, testPlayer.getLocation());
-        assertTrue(testPlayer.getItemPouch().isEmpty());
+        assertTrue(testPlayer.getItemPouch().getItemPouch().isEmpty());
     }
 
     @Test
@@ -89,12 +89,12 @@ class PlayerTest {
         Item itemA = new Item();
         Item itemB = new Item();
         testPlayer.addItemToPouch(itemA);
-        assertEquals(itemA, testPlayer.getItemPouch().get(0));
-        assertEquals(1, testPlayer.getItemPouch().size());
+        assertEquals(itemA, testPlayer.getItemPouch().getItemPouch().get(0));
+        assertEquals(1, testPlayer.getItemPouch().getItemPouch().size());
         testPlayer.addItemToPouch(itemB);
-        assertEquals(itemA, testPlayer.getItemPouch().get(0));
-        assertEquals(itemB, testPlayer.getItemPouch().get(1));
-        assertEquals(2, testPlayer.getItemPouch().size());
+        assertEquals(itemA, testPlayer.getItemPouch().getItemPouch().get(0));
+        assertEquals(itemB, testPlayer.getItemPouch().getItemPouch().get(1));
+        assertEquals(2, testPlayer.getItemPouch().getItemPouch().size());
     }
 
 }
