@@ -10,6 +10,9 @@ public class TileTest {
 
     private Tile testTileA;
     private Tile testTileB;
+    private Tile testTileC;
+    private Tile testTileD;
+    private Tile testTileE;
     private Item item;
 
     @BeforeEach
@@ -17,6 +20,9 @@ public class TileTest {
         item = new Item();
         testTileA = new Tile(item, "id_abc");
         testTileB = new Tile("id_xyz");
+        testTileC = new Tile("c");
+        testTileD = new Tile("d");
+        testTileE = new Tile("e");
     }
 
     @Test
@@ -30,4 +36,12 @@ public class TileTest {
         assertEquals("id_xyz", testTileB.getId());
     }
 
+    @Test
+    void testSetAllDirections() {
+        testTileA.setAllDirections(testTileB, testTileC, testTileD, testTileE);
+        assertEquals(testTileB, testTileA.getUp());
+        assertEquals(testTileC, testTileA.getDown());
+        assertEquals(testTileD, testTileA.getLeft());
+        assertEquals(testTileE, testTileA.getRight());
+    }
 }

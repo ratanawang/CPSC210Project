@@ -30,7 +30,7 @@ public class Player {
             case "left":
                 location = location.getLeft();
                 break;
-            case "right":
+            default:
                 location = location.getRight();
                 break;
         }
