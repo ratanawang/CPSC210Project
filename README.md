@@ -23,5 +23,5 @@
 - As a user, I want to be able to collect items, add them to my item pouch, and view them
 - As a user, I want to be able to type in passwords whenever necessary
 
-- As a user, I want to be able to save the items within my pouch for future levels.
-- As a user, I want to be able to choose to play a new level with previously saved items. 
+- As a user, I want to be able to save my progress (current location, collected items) for a level.
+- As a user, I want to be able to play a level with previously saved progress. 
