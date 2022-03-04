@@ -23,5 +23,5 @@
 - As a user, I want to be able to collect items, add them to my item pouch, and view them
 - As a user, I want to be able to type in passwords whenever necessary
 
-- As a user, I want to be able to save the number of steps I took to pass the level.
-- As a user, I want to be able to resume playing with a previous high score (lowest number of steps to pass a level). 
+- As a user, I want to be able to save the items within my pouch for future levels.
+- As a user, I want to be able to choose to play a new level with previously saved items. 
