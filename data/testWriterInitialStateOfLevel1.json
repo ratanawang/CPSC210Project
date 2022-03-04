@@ -1,0 +1,60 @@
+{
+    "name": "level 1",
+    "location": "t_2_2",
+    "maze": [
+        {
+            "item": "",
+            "structure type": "tile",
+            "id": "t_1_1"
+        },
+        {
+            "item": "",
+            "structure type": "tile",
+            "id": "t_1_2"
+        },
+        {
+            "item": {
+                "id": "c_3_1",
+                "item type": "key"
+            },
+            "structure type": "tile",
+            "id": "t_1_3"
+        },
+        {
+            "item": "",
+            "structure type": "tile",
+            "id": "t_2_1"
+        },
+        {
+            "item": "",
+            "structure type": "tile",
+            "id": "t_2_2"
+        },
+        {
+            "item": "",
+            "structure type": "tile",
+            "id": "t_2_3"
+        },
+        {
+            "item": {
+                "item type": "clue",
+                "info": "47 days after Christmas [mm/dd]."
+            },
+            "structure type": "chest",
+            "id": "c_3_1",
+            "status": "locked"
+        },
+        {
+            "item": "",
+            "structure type": "tile",
+            "id": "t_3_2"
+        },
+        {
+            "password": "0210",
+            "structure type": "exit",
+            "id": "e_3_3"
+        }
+    ],
+    "items": [],
+    "player": "default player"
+}

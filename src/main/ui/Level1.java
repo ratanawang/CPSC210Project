@@ -1,10 +1,17 @@
 package ui;
 
 import model.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 // Represents the set-up for level 1, including
 // all of its structural features.
-public class Level1 extends Level {
+public class Level1 extends Level implements Writable {
 
     private Chest ch0;
     private Clue cl0;
@@ -18,30 +25,69 @@ public class Level1 extends Level {
     private Tile t6;
 
     // Constructs the level
+    // REQUIRES: test = "test" if testing, to avoid console prompt
     // EFFECTS: creates a Level1() object, which also
     // initializes the key, clue, player, and creates the maze
-    public Level1() {
+    public Level1(String test) {
+        super();
         System.out.println("You are now playing Level 1.");
         k0 = new Key("c_3_1");
         cl0 = new Clue("47 days after Christmas [mm/dd].");
         constructMaze();
         connectMaze();
-        player = new Player(t4);
+        this.player = new Player(t4);
+        if (test.equals("test")) {
+            return;
+        }
+        nextStep();
+    }
+
+    // Constructs the level from saved data
+    // REQUIRES: test = "test" if testing, to avoid console prompt
+    // EFFECTS: creates a Level1() object, which also
+    // initializes the key, clue, and creates the maze,
+    // and places the given player at its previous location
+    // if chestUnlocked, then the chest is set to unlocked
+    public Level1(Player player, boolean chestUnlocked, String test) {
+        super();
+        System.out.println("You are now playing Level 1.");
+        k0 = new Key("c_3_1");
+        cl0 = new Clue("47 days after Christmas [mm/dd].");
+        constructMaze();
+        connectMaze();
+        this.player = player;
+        connectLastLocation();
+        if (chestUnlocked) {
+            ch0.setStatus("unlocked");
+        }
+        if (test.equals("test")) {
+            return;
+        }
         nextStep();
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes each maze structure
+    // EFFECTS: initializes each maze structure and adds
+    // it to the mazeStructures list
     protected void constructMaze() {
         t0 = new Tile("t_1_1");
+        mazeStructures.add(t0);
         t1 = new Tile("t_1_2");
+        mazeStructures.add(t1);
         t2 = new Tile(k0, "t_1_3");
+        mazeStructures.add(t2);
         t3 = new Tile("t_2_1");
+        mazeStructures.add(t3);
         t4 = new Tile("t_2_2");
+        mazeStructures.add(t4);
         t5 = new Tile("t_2_3");
+        mazeStructures.add(t5);
         ch0 = new Chest(cl0, "c_3_1");
+        mazeStructures.add(ch0);
         t6 = new Tile("t_3_2");
+        mazeStructures.add(t6);
         exit = new Exit("0210", "e_3_3");
+        mazeStructures.add(exit);
     }
 
     // MODIFIES: this
@@ -68,6 +114,74 @@ public class Level1 extends Level {
         t6.setRight(exit);
         exit.setUp(t5);
         exit.setLeft(t6);
+    }
+
+    // REQUIRES: ID of player's location is also ID of a maze structure
+    // MODIFIES: player
+    // EFFECTS: connects saved location with rest of maze
+    protected void connectLastLocation() {
+        for (MazeStructure m : mazeStructures) {
+            if (m.getId().equals(player.getLocation().getId())) {
+                player.moveTo(m);
+                break;
+            }
+        }
+    }
+
+    @Override
+    // Method based on WorkRoomApp class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // EFFECTS: saves the level to file
+    protected void saveLevel() {
+        System.out.println("Your progress has been saved.");
+        try {
+            jsonWriter.open();
+            jsonWriter.write(this);
+            jsonWriter.close();
+            System.out.println("Saved to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    @Override
+    // Method based on WorkRoom class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // EFFECTS: converts a level into a JSONObject
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", "level 1");
+        json.put("player", "default player");
+        json.put("location", player.getLocation().getId());
+        json.put("items", itemsToJson());
+        json.put("maze", mazeStructuresToJson());
+        return json;
+    }
+
+    // Method based on WorkRoom class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // EFFECTS: returns player's items as a JSON array
+    private JSONArray itemsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Item t : player.getItemPouch().getItemPouch()) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    // Method based on WorkRoom class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // EFFECTS: returns maze structures list as a JSON array
+    private JSONArray mazeStructuresToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (MazeStructure m : mazeStructures) {
+            jsonArray.put(m.toJson());
+        }
+
+        return jsonArray;
     }
 
 }

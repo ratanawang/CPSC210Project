@@ -1,8 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // A key represents an item that can open chests.
 // All keys will have the same IDs as the chests they open.
-public class Key extends Item {
+public class Key extends Item implements Writable {
 
     private String id;
 
@@ -24,6 +27,17 @@ public class Key extends Item {
     public Item openChest(Chest chest) {
         chest.setStatus("unlocked");
         return chest.getItem();
+    }
+
+    @Override
+    // Method based on WorkRoom class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // EFFECTS: converts a key into a JSONObject
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("item type", "key");
+        json.put("id", this.id);
+        return json;
     }
 
     public String getId() {

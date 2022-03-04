@@ -1,16 +1,34 @@
 package ui;
 
 import model.*;
+import org.json.JSONObject;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 // General level that includes the actions that
 // a player may take at any level.
 public abstract class Level {
 
+    protected static final String JSON_STORE = "./data/level.json";
     protected Player player;
     protected Exit exit;
     protected Scanner scanner = new Scanner(System.in);
+    protected JsonWriter jsonWriter;
+    protected JsonReader jsonReader;
+    protected List<MazeStructure> mazeStructures;
+
+    // constructor
+    // EFFECTS: creates the necessary data persistence objects
+    // and creates an empty maze structures list
+    public Level() {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        mazeStructures = new ArrayList<>();
+    }
 
     // MODIFIES: this
     // EFFECTS: initializes each maze structure
@@ -21,12 +39,16 @@ public abstract class Level {
     protected abstract void connectMaze();
 
     // EFFECTS: asks the user what their next step will be, which
-    // can be either moving in any direction or viewing their item pouch
+    // can be either moving in any direction, viewing their item pouch,
+    // or saving their progress and quitting
     protected void nextStep() {
-        System.out.println("Move up (w), down (s), left (a), right (d), or view item pouch (v).");
+        System.out.println("Move up (w), down (s), left (a), right (d), view item pouch (v), or save and quit (q).");
         String input = scanner.nextLine();
         if (input.equals("v")) {
             viewItems();
+        } else if (input.equals("q")) {
+            saveLevel();
+            System.exit(0);
         } else if (input.equals("w") || input.equals("s") || input.equals("a") || input.equals("d")) {
             String direction = determineDirection(input);
             if (canMove(direction)) {
@@ -124,13 +146,37 @@ public abstract class Level {
     // REQUIRES: current player location is a tile with an item
     // EFFECTS: adds the item to the player's item pouch if not already in pouch
     protected void pickUpItem() {
-        Item i = ((Tile) player.getLocation()).getItem();
-        if (! player.getItemPouch().getItemPouch().contains(i)) {
-            System.out.println("You found a " + i.getClass().getSimpleName() + "!");
+        Item item = ((Tile) player.getLocation()).getItem();
+        String itemType = item.getClass().getSimpleName();
+        if (newItem(item)) {
+            System.out.println("You found a " + itemType + "!");
             System.out.println("It has been added to your item pouch.");
-            player.addItemToPouch(i);
+            player.addItemToPouch(item);
+        } else {
+            System.out.println("You've already found this " + itemType + ".");
         }
         nextStep();
+    }
+
+    // EFFECTS: returns true if this item has not already been
+    // added to a player's item pouch
+    protected boolean newItem(Item item) {
+        String itemType = item.getClass().getSimpleName();
+        for (Item i : player.getItemPouch().getItemPouch()) {
+            String type = i.getClass().getSimpleName();
+            if (itemType.equals(type)) {
+                if (type.equals("Clue")) {
+                    if (((Clue) item).getInfo().equals(((Clue) i).getInfo())) {
+                        return false;
+                    }
+                } else if (type.equals("Key")) {
+                    if (((Key) item).getId().equals(((Key) i).getId())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     // REQUIRES: current player location is at a chest
@@ -139,7 +185,7 @@ public abstract class Level {
     // and add the item inside to the pouch
     protected void tryToOpenChest() {
         Chest chest = (Chest) player.getLocation();
-        if (player.getItemPouch().getItemPouch().contains(chest.getItem())) {
+        if (chest.getStatus().equals("unlocked")) {
             System.out.println("You've already opened this chest.");
             nextStep();
             return;
@@ -162,7 +208,7 @@ public abstract class Level {
     }
 
     // REQUIRES: current player location is at the exit
-    // EFFECTS: if the right password is typed in, the player successfully
+    // EFFECTS: if the right password is typed in, the player successfully saves and
     // exits the game; otherwise, they have to try again or move somewhere else
     protected void tryToExit() {
         System.out.println("You have arrived at the exit.");
@@ -170,6 +216,7 @@ public abstract class Level {
         String input = scanner.nextLine();
         if (input.equals(exit.getPassword())) {
             exitMaze();
+            saveLevel();
         } else {
             System.out.println("Incorrect password.");
             System.out.println("1. Try again?");
@@ -188,4 +235,19 @@ public abstract class Level {
         System.out.println("Success! You have escaped!");
     }
 
+    // EFFECTS: saves the level to file
+    protected abstract void saveLevel();
+
+    // EFFECTS: converts a level into a JSONObject
+    public abstract JSONObject toJson();
+
+    // EFFECTS: returns player
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    // EFFECTS: returns maze structures
+    public List<MazeStructure> getMazeStructures() {
+        return this.mazeStructures;
+    }
 }

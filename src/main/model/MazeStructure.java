@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // Maze structures have either nothing (null) or
 // other maze structures to their upward, downward,
 // leftward, and rightward directions.
@@ -23,6 +25,9 @@ public abstract class MazeStructure {
         this.left = left;
         this.right = right;
     }
+
+    // EFFECTS: converts a maze structure into a JSONObject
+    public abstract JSONObject toJson();
 
     public void setUp(MazeStructure up) {
         this.up = up;

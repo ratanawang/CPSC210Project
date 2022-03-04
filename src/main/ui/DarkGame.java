@@ -1,17 +1,28 @@
 package ui;
 
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // The main game, which shows the main menu
 // and allows the player to play different levels.
 public class DarkGame {
 
+    private static final String JSON_STORE = "./data/level.json";
     private Scanner scanner;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // Constructs a game
-    // EFFECTS: creates a new game, shows the main menu
+    // EFFECTS: creates a new game, necessary data persistence objects,
+    // and shows the main menu
     public DarkGame() {
         scanner = new Scanner(System.in);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         System.out.println("Welcome to the Dark.");
         mainMenu();
     }
@@ -44,27 +55,44 @@ public class DarkGame {
     private void play() {
         System.out.println("You have chosen to play.");
         System.out.println("Please choose a level. (e.g. type '1' for Level 1)");
-        showLevels();
+        chooseLevel();
     }
 
     // EFFECTS: lets player choose which level to play, if any
-    private void showLevels() {
+    private void chooseLevel() {
         System.out.println("> 1. Level 1");
         System.out.println("> 0. Back to Main Menu");
         String input = scanner.nextLine();
         switch (input) {
             case "1":
-                new Level1();
+                Level level = loadLevel1();
                 break;
             case "0":
                 mainMenu();
                 break;
             default:
                 invalidInputMessage();
-                showLevels();
+                chooseLevel();
                 break;
         }
         mainMenu();
+    }
+
+    // Method based on WorkRoomApp class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // EFFECTS: loads level from file if it exists;
+    // otherwise, create a new level 1
+    protected Level1 loadLevel1() {
+        try {
+            return (Level1) jsonReader.read("");
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to run application: file not found");
+            System.out.println("A new level will be created");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("A new level will be created");
+        }
+        return new Level1("");
     }
 
     // EFFECTS: prints out the rules of the game, then returns to main menu
@@ -86,5 +114,4 @@ public class DarkGame {
     public Scanner getScanner() {
         return scanner;
     }
-
 }

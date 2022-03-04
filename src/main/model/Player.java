@@ -8,7 +8,7 @@ public class Player {
     private ItemPouch itemPouch;
     private MazeStructure location;
 
-    // EFFECTS: creates a player at the given location
+    // EFFECTS: creates a player at the given location's ID
     // and an empty item pouch
     public Player(MazeStructure location) {
         this.location = location;
@@ -34,6 +34,11 @@ public class Player {
                 location = location.getRight();
                 break;
         }
+    }
+
+    // EFFECTS: moves the player to a specific location
+    public void moveTo(MazeStructure m) {
+        this.location = m;
     }
 
     // REQUIRES: item is not null, and not already in pouch
