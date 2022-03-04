@@ -9,7 +9,7 @@
 
 > Who can play Dark?
 
-- ~Anyone.~ Actually, probably anyone over the age of 5.
+- Anyone who can type.
 
 > What's the story behind the creation of Dark?
 
@@ -22,3 +22,6 @@
 - As a user, I want to be able to move in a specified direction (up/down/left/right)
 - As a user, I want to be able to collect items, add them to my item pouch, and view them
 - As a user, I want to be able to type in passwords whenever necessary
+
+- As a user, I want to be able to save the number of steps I took to pass the level.
+- As a user, I want to be able to resume playing with a previous high score (lowest number of steps to pass a level). 
