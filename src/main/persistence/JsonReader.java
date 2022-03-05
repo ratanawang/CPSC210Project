@@ -89,7 +89,7 @@ public class JsonReader {
                 mazeStructures.add(parseChest(nextItem));
             } else if (itemType.equals("exit")) {
                 mazeStructures.add(parseExit(nextItem));
-            } else if (itemType.equals("tile")) {
+            } else { // if (itemType.equals("tile")) {
                 mazeStructures.add(parseTile(nextItem));
             }
         }

@@ -27,6 +27,17 @@ class JsonReaderTest {
     }
 
     @Test
+    void testReaderEmptyFile() {
+        JsonReader reader = new JsonReader("./data/empty.json");
+        try {
+            Level level = reader.read("test");
+            fail("IOException expected");
+        } catch (IOException e) {
+            // pass
+        }
+    }
+
+    @Test
     // Method based on JSONReaderTest class in
     // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     void testReaderInitialStateOfLevel1() {
