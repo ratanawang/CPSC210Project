@@ -22,21 +22,21 @@ public class KeyTest {
 
     @Test
     void testCanOpenChestTrue() {
-        Item i = new Item();
+        Item i = new Clue("A");
         Chest c = new Chest(i, "id_abc");
         assertTrue(testKey.canOpenChest(c));
     }
 
     @Test
     void testCanOpenChestFalse() {
-        Item i = new Item();
+        Item i = new Clue("B");
         Chest c = new Chest(i, "id_abd");
         assertFalse(testKey.canOpenChest(c));
     }
 
     @Test
     void testOpenChest() {
-        Item i = new Item();
+        Item i = new Clue("C");
         Chest c = new Chest(i, "id_abc");
         assertEquals(i, testKey.openChest(c));
         assertEquals("unlocked", c.getStatus());

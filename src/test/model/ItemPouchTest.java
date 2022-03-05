@@ -14,8 +14,8 @@ public class ItemPouchTest {
 
     @BeforeEach
     void runBefore() {
-        itemA = new Item();
-        itemB = new Item();
+        itemA = new Clue("hello");
+        itemB = new Clue("world");
         testItemPouch = new ItemPouch();
     }
 

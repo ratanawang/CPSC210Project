@@ -86,8 +86,8 @@ class PlayerTest {
 
     @Test
     void testAddItemToPouch() {
-        Item itemA = new Item();
-        Item itemB = new Item();
+        Item itemA = new Clue("A");
+        Item itemB = new Clue("B");
         testPlayer.addItemToPouch(itemA);
         assertEquals(itemA, testPlayer.getItemPouch().getItemPouch().get(0));
         assertEquals(1, testPlayer.getItemPouch().getItemPouch().size());

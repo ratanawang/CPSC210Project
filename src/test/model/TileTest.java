@@ -17,7 +17,7 @@ public class TileTest {
 
     @BeforeEach
     void runBefore() {
-        item = new Item();
+        item = new Clue("A");
         testTileA = new Tile(item, "id_abc");
         testTileB = new Tile("id_xyz");
         testTileC = new Tile("c");
