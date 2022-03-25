@@ -17,7 +17,7 @@ class JsonWriterTest {
     // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     void testWriterInvalidFile() {
         try {
-            Level level = new Level1("test");
+            Level level = new Level1();
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException expected");
@@ -31,7 +31,7 @@ class JsonWriterTest {
     // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     void testWriterInitialStateOfLevel1() {
         try {
-            Level level = new Level1("test");
+            Level level = new Level1();
             JsonWriter writer = new JsonWriter("./data/testWriterInitialStateOfLevel1.json");
             writer.open();
             writer.write(level);
@@ -56,7 +56,7 @@ class JsonWriterTest {
     void testWriterPartiallySolvedLevel1() {
         try {
             // setting up a partially solved level
-            Level level = new Level1("test");
+            Level level = new Level1();
             for (MazeStructure m : level.getMazeStructures()) {
                 if (m.getId().equals("t_1_3")) {
                     level.getPlayer().addItemToPouch(((Tile) m).getItem());

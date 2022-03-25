@@ -73,7 +73,7 @@ public class JsonReader {
         for (Item i : itemPouch) {
             player.addItemToPouch(i);
         }
-        return new Level1(player, chestUnlocked, test);
+        return new Level1(player, chestUnlocked);
     }
 
     // Method based on JSONReader class in

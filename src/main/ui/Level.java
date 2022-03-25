@@ -2,31 +2,24 @@ package ui;
 
 import model.*;
 import org.json.JSONObject;
-import persistence.JsonReader;
-import persistence.JsonWriter;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 // General level that includes the actions that
 // a player may take at any level.
-public abstract class Level {
+public abstract class Level extends DarkGame {
 
     protected static final String JSON_STORE = "./data/level.json";
     protected Player player;
     protected Exit exit;
-    protected Scanner scanner = new Scanner(System.in);
-    protected JsonWriter jsonWriter;
-    protected JsonReader jsonReader;
     protected List<MazeStructure> mazeStructures;
 
     // constructor
-    // EFFECTS: creates the necessary data persistence objects
-    // and creates an empty maze structures list
+    // EFFECTS: creates an empty maze structures list
     public Level() {
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
+        super("");
         mazeStructures = new ArrayList<>();
     }
 
@@ -37,69 +30,6 @@ public abstract class Level {
     // MODIFIES: this
     // EFFECTS: establishes the relationships between maze structures
     protected abstract void connectMaze();
-
-    // EFFECTS: asks the user what their next step will be, which
-    // can be either moving in any direction, viewing their item pouch,
-    // or saving their progress and quitting
-    protected void nextStep() {
-        System.out.println("Move up (w), down (s), left (a), right (d), view item pouch (v), or save and quit (q).");
-        String input = scanner.nextLine();
-        if (input.equals("v")) {
-            viewItems();
-        } else if (input.equals("q")) {
-            saveLevel();
-            System.exit(0);
-        } else if (input.equals("w") || input.equals("s") || input.equals("a") || input.equals("d")) {
-            String direction = determineDirection(input);
-            if (canMove(direction)) {
-                player.move(direction);
-                System.out.println("You moved " + direction);
-                refresh();
-            } else {
-                nextStep();
-            }
-        } else {
-            System.out.println("Invalid input. Try again.");
-            nextStep();
-        }
-    }
-
-    // EFFECTS: prints out all items in a player's item pouch, unless empty,
-    // and if an item is a clue, lets the player choose to read it
-    protected void viewItems() {
-        if (player.getItemPouch().getItemPouch().isEmpty()) {
-            System.out.println("You currently have no items.");
-            nextStep();
-            return;
-        }
-        System.out.println("You have the following items in your item pouch:");
-        for (Item i : player.getItemPouch().getItemPouch()) {
-            System.out.println("- " + i.getClass().getSimpleName());
-            if (i instanceof Clue) {
-                System.out.println("Read clue? (y/n)");
-                String input = scanner.nextLine();
-                if (input.equals("y")) {
-                    System.out.println("--> " + ((Clue) i).getInfo());
-                }
-            }
-        }
-        nextStep();
-    }
-
-    // REQUIRES: input is one of "w", "s", "a", or "d"
-    // EFFECTS: returns a direction based on single-letter keyboard input
-    protected String determineDirection(String input) {
-        switch (input) {
-            case "w":
-                return "up";
-            case "s":
-                return "down";
-            case "a":
-                return "left";
-            default:
-                return "right";
-        }
-    }
 
     // EFFECTS: returns true if there is a maze structure in the
     // intended direction of movement, otherwise false
@@ -119,12 +49,7 @@ public abstract class Level {
                 canMove = player.getLocation().getRight() != null;
                 break;
         }
-        if (canMove) {
-            return true;
-        } else {
-            System.out.println("You can't go there. Pick a different direction.");
-            return false;
-        }
+        return canMove;
     }
 
     // EFFECTS: interacts with any items or maze structures in the
@@ -135,9 +60,7 @@ public abstract class Level {
         } else if (player.getLocation() instanceof Chest) {
             tryToOpenChest();
         } else if (player.getLocation() instanceof Tile) {
-            if (((Tile) player.getLocation()).getItem() == null) {
-                nextStep();
-            } else {
+            if (((Tile) player.getLocation()).getItem() != null) {
                 pickUpItem();
             }
         }
@@ -148,14 +71,13 @@ public abstract class Level {
     protected void pickUpItem() {
         Item item = ((Tile) player.getLocation()).getItem();
         String itemType = item.getClass().getSimpleName();
+        String title = "You found a " + itemType + "!";
         if (newItem(item)) {
-            System.out.println("You found a " + itemType + "!");
-            System.out.println("It has been added to your item pouch.");
+            showMessage("It has been added to your item pouch.", title);
             player.addItemToPouch(item);
         } else {
-            System.out.println("You've already found this " + itemType + ".");
+            showMessage("But you've already found this item before.", title);
         }
-        nextStep();
     }
 
     // EFFECTS: returns true if this item has not already been
@@ -184,55 +106,45 @@ public abstract class Level {
     // corresponding key is within the player's item pouch, open the chest
     // and add the item inside to the pouch
     protected void tryToOpenChest() {
+        String title = "You found a chest!";
         Chest chest = (Chest) player.getLocation();
         if (chest.getStatus().equals("unlocked")) {
-            System.out.println("You've already opened this chest.");
-            nextStep();
-            return;
-        }
-        System.out.println("You found a chest!");
-        for (Item i : player.getItemPouch().getItemPouch()) {
-            if (i instanceof Key) {
-                if (((Key) i).canOpenChest(chest)) {
-                    Item treasure = ((Key) i).openChest(chest);
-                    player.addItemToPouch(treasure);
-                    System.out.println("You opened the chest and got an item!");
-                    break;
+            showMessage("You've already opened this chest.", title);
+        } else {
+            for (Item i : player.getItemPouch().getItemPouch()) {
+                if (i instanceof Key) {
+                    if (((Key) i).canOpenChest(chest)) {
+                        Item treasure = ((Key) i).openChest(chest);
+                        player.addItemToPouch(treasure);
+                        showMessage("You opened the chest and got an item!", title);
+                    } else {
+                        showMessage("You don't have a key that unlocks this chest.", title);
+                    }
                 }
             }
         }
-        if (chest.getStatus().equals("locked")) {
-            System.out.println("However, you don't have a key that unlocks this chest.");
-        }
-        nextStep();
     }
 
     // REQUIRES: current player location is at the exit
     // EFFECTS: if the right password is typed in, the player successfully saves and
     // exits the game; otherwise, they have to try again or move somewhere else
     protected void tryToExit() {
-        System.out.println("You have arrived at the exit.");
-        System.out.println("Please type in the password:");
-        String input = scanner.nextLine();
+        String input = (String) JOptionPane.showInputDialog(null, "Enter the password:",
+                "You found the exit!", JOptionPane.PLAIN_MESSAGE, null,
+                null, null);
         if (input.equals(exit.getPassword())) {
-            exitMaze();
-            saveLevel();
+            showMessage("You have escaped!", "Success!");
+            level = this;
+            tryToQuitGame();
         } else {
-            System.out.println("Incorrect password.");
-            System.out.println("1. Try again?");
-            System.out.println("2. Move somewhere else");
-            input = scanner.nextLine();
-            if (input.equals("1")) {
+            Object[] options = {"Yes, try again.", "No, move somewhere else."};
+            int choice = JOptionPane.showOptionDialog(null, "Wrong password. Try again?",
+                    "Nope.", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[1]);
+            if (choice == 0) { // yes, try again
                 tryToExit();
-            } else if (input.equals("2")) {
-                nextStep();
             }
         }
-    }
-
-    // EFFECTS: prints out a congratulatory message regarding escape
-    protected void exitMaze() {
-        System.out.println("Success! You have escaped!");
     }
 
     // EFFECTS: saves the level to file

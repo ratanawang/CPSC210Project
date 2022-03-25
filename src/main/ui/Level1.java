@@ -6,8 +6,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 // Represents the set-up for level 1, including
 // all of its structural features.
@@ -25,31 +24,23 @@ public class Level1 extends Level implements Writable {
     private Tile t6;
 
     // Constructs the level
-    // REQUIRES: test = "test" if testing, to avoid console prompt
     // EFFECTS: creates a Level1() object, which also
     // initializes the key, clue, player, and creates the maze
-    public Level1(String test) {
-        super();
+    public Level1() {
         System.out.println("You are now playing Level 1.");
         k0 = new Key("c_3_1");
         cl0 = new Clue("47 days after Christmas [mm/dd].");
         constructMaze();
         connectMaze();
         this.player = new Player(t4);
-        if (test.equals("test")) {
-            return;
-        }
-        nextStep();
     }
 
     // Constructs the level from saved data
-    // REQUIRES: test = "test" if testing, to avoid console prompt
     // EFFECTS: creates a Level1() object, which also
     // initializes the key, clue, and creates the maze,
     // and places the given player at its previous location
     // if chestUnlocked, then the chest is set to unlocked
-    public Level1(Player player, boolean chestUnlocked, String test) {
-        super();
+    public Level1(Player player, boolean chestUnlocked) {
         System.out.println("You are now playing Level 1.");
         k0 = new Key("c_3_1");
         cl0 = new Clue("47 days after Christmas [mm/dd].");
@@ -60,10 +51,6 @@ public class Level1 extends Level implements Writable {
         if (chestUnlocked) {
             ch0.setStatus("unlocked");
         }
-        if (test.equals("test")) {
-            return;
-        }
-        nextStep();
     }
 
     // MODIFIES: this
