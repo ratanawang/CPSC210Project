@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,5 +44,20 @@ public class TileTest {
         assertEquals(testTileC, testTileA.getDown());
         assertEquals(testTileD, testTileA.getLeft());
         assertEquals(testTileE, testTileA.getRight());
+    }
+
+    @Test
+    void testToJsonWithItem() {
+        JSONObject json = testTileA.toJson();
+        assertEquals(json.get("structure type"), "tile");
+        assertEquals(json.get("id"), testTileA.getId());
+    }
+
+    @Test
+    void testToJsonWithoutItem() {
+        JSONObject json = testTileB.toJson();
+        assertEquals(json.get("structure type"), "tile");
+        assertEquals(json.get("item"), "");
+        assertEquals(json.get("id"), testTileB.getId());
     }
 }

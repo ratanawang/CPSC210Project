@@ -310,7 +310,7 @@ public class DarkGame implements ActionListener {
     // otherwise, create a new level 1
     protected Level1 loadLevel1() {
         try {
-            return (Level1) jsonReader.read("");
+            return (Level1) jsonReader.read();
         } catch (FileNotFoundException e) {
             showMessage("A new level will be created.", "File not found");
         } catch (IOException e) {

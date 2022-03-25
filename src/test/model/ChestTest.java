@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,14 @@ public class ChestTest {
         assertEquals(item, testChest.getItem());
         assertEquals("id_abc", testChest.getId());
         assertEquals("locked", testChest.getStatus());
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = testChest.toJson();
+        assertEquals(json.get("structure type"), "chest");
+        assertEquals(json.get("id"), testChest.getId());
+        assertEquals(json.get("status"), testChest.getStatus());
     }
 
 }

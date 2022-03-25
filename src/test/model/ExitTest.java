@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,14 @@ public class ExitTest {
     void testExit() {
         assertEquals("pw_abc", testExit.getPassword());
         assertEquals("id_abc", testExit.getId());
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = testExit.toJson();
+        assertEquals(json.get("structure type"), "exit");
+        assertEquals(json.get("password"), testExit.getPassword());
+        assertEquals(json.get("id"), testExit.getId());
     }
 
 }

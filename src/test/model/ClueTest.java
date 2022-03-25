@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,13 @@ public class ClueTest {
     @Test
     void testClue() {
         assertEquals("This is a clue.", testClue.getInfo());
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = testClue.toJson();
+        assertEquals(json.get("item type"), "clue");
+        assertEquals(json.get("info"), testClue.getInfo());
     }
 
 }

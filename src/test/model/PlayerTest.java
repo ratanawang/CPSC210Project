@@ -97,4 +97,13 @@ class PlayerTest {
         assertEquals(2, testPlayer.getItemPouch().getItemPouch().size());
     }
 
+    @Test
+    void testMoveTo() {
+        assertEquals(tileMiddle, testPlayer.getLocation());
+        testPlayer.moveTo(tileDown);
+        assertEquals(tileDown, testPlayer.getLocation());
+        testPlayer.moveTo(tileRight);
+        assertEquals(tileRight, testPlayer.getLocation());
+    }
+
 }

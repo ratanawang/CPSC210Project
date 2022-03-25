@@ -37,7 +37,7 @@ class JsonWriterTest {
             writer.write(level);
             writer.close();
             JsonReader reader = new JsonReader("./data/testWriterInitialStateOfLevel1.json");
-            level = reader.read("test");
+            level = reader.read();
             assertEquals("t_2_2", level.getPlayer().getLocation().getId());
             for (MazeStructure m : level.getMazeStructures()) {
                 if (m.getClass().getSimpleName().equals("Chest")) {
@@ -78,7 +78,7 @@ class JsonWriterTest {
             writer.close();
             // reading the level from the source
             JsonReader reader = new JsonReader("./data/testWriterPartiallySolvedLevel1.json");
-            level = reader.read("test");
+            level = reader.read();
             for (MazeStructure m : level.getMazeStructures()) {
                 if (m.getClass().getSimpleName().equals("Chest")) {
                     assertEquals("unlocked", ((Chest) m).getStatus());

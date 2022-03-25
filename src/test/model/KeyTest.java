@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +41,13 @@ public class KeyTest {
         Chest c = new Chest(i, "id_abc");
         assertEquals(i, testKey.openChest(c));
         assertEquals("unlocked", c.getStatus());
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = testKey.toJson();
+        assertEquals(json.get("item type"), "key");
+        assertEquals(json.get("id"), testKey.getId());
     }
 
 }

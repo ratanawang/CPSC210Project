@@ -19,7 +19,7 @@ class JsonReaderTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            Level level = reader.read("test");
+            Level level = reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -30,7 +30,7 @@ class JsonReaderTest {
     void testReaderEmptyFile() {
         JsonReader reader = new JsonReader("./data/empty.json");
         try {
-            Level level = reader.read("test");
+            Level level = reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -43,7 +43,7 @@ class JsonReaderTest {
     void testReaderInitialStateOfLevel1() {
         JsonReader reader = new JsonReader("./data/testReaderInitialStateOfLevel1.json");
         try {
-            Level level = reader.read("test");
+            Level level = reader.read();
             assertEquals("t_2_2", level.getPlayer().getLocation().getId());
             for (MazeStructure m : level.getMazeStructures()) {
                 if (m.getClass().getSimpleName().equals("Chest")) {
@@ -62,7 +62,7 @@ class JsonReaderTest {
     void testReaderPartiallySolvedLevel1() {
         JsonReader reader = new JsonReader("./data/testReaderPartiallySolvedLevel1.json");
         try {
-            Level level = reader.read("test");
+            Level level = reader.read();
             for (MazeStructure m : level.getMazeStructures()) {
                 if (m.getClass().getSimpleName().equals("Chest")) {
                     assertEquals("unlocked", ((Chest) m).getStatus());

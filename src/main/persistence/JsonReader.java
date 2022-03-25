@@ -29,10 +29,10 @@ public class JsonReader {
     // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: reads level from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Level read(String test) throws IOException {
+    public Level read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseLevel(jsonObject, test);
+        return parseLevel(jsonObject);
     }
 
     // Method taken from JSONReader class in
@@ -54,7 +54,7 @@ public class JsonReader {
     // Method based on JSONReader class in
     // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: parses level from JSON object and returns it
-    private Level parseLevel(JSONObject jsonObject, String test) {
+    private Level parseLevel(JSONObject jsonObject) {
         List<Item> itemPouch = parseItems(jsonObject);
         List<MazeStructure> mazeStructures = parseMaze(jsonObject);
         String location = jsonObject.getString("location");
