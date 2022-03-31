@@ -61,14 +61,33 @@ public class DarkGame implements ActionListener {
     public DarkGame() {
         initializeEverything();
         showPanel("Main Menu", panelMainMenu);
-        System.out.println("A new level is being created!");
     }
 
     // constructor for subclass purposes
     // EFFECTS: creates a new game, but prevents any GUI from forming
     public DarkGame(String subclass) {
         initializeEverything();
-        System.out.println("A new level is being created, but not shown!");
+    }
+
+    // EFFECTS: listens for closing of window, then quits application
+    private void addCloseListenerToFrame() {
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (level != null) {
+                    level.player.quitGame();
+                }
+                quitWithNoEventLog();
+            }
+        });
+    }
+
+    // REQUIRES: level is null
+    // EFFECTS: prints statement that clarifies lack of event log
+    private void quitWithNoEventLog() {
+        System.out.println("No level was created.");
+        System.out.println("===== Event Log: N/A =====");
+        System.exit(0);
     }
 
     // MODIFIES: this
@@ -82,6 +101,7 @@ public class DarkGame implements ActionListener {
         initializeLevel1Buttons();
         initializeLevel1Panel();
         initializeFrame();
+        addCloseListenerToFrame();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         currentPanel = new JPanel(); // throwaway panel
@@ -177,7 +197,8 @@ public class DarkGame implements ActionListener {
                 readClue.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        showMessage("--> " + ((Clue) i).getInfo(), "Read clue:");
+                        level.player.readClue((Clue) i);
+                        showMessage(((Clue) i).getInfo(), "Read clue:");
                     }
                 });
                 panelItems.add(readClue);
@@ -292,8 +313,9 @@ public class DarkGame implements ActionListener {
         if (choice == 0) { // yes, save and quit
             if (level != null) {
                 level.saveLevel();
+                level.player.quitGame();
             }
-            System.exit(0);
+            quitWithNoEventLog();
         }
     }
 

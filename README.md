@@ -25,3 +25,17 @@
 
 - As a user, I want to be able to save my progress (current location, collected items) for a level.
 - As a user, I want to be able to play a level with previously saved progress. 
+
+### Phase 4: Task 2
+
+Sample Printed Event Log:
+> Thu Mar 31 03:49:43 PDT 2022 <br>
+> Key added to item pouch. <br>
+> Thu Mar 31 03:49:46 PDT 2022 <br>
+> Clue added to item pouch. <br>
+> Thu Mar 31 03:49:50 PDT 2022 <br>
+> Clue (47 days after Christmas [mm/dd].) was read. <br>
+> Thu Mar 31 03:49:56 PDT 2022 <br>
+> Clue (47 days after Christmas [mm/dd].) was read. <br>
+
+*Note: The event log will not print if the user quits without playing a level.*
