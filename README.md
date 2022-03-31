@@ -39,3 +39,18 @@ Sample Printed Event Log:
 > Clue (47 days after Christmas [mm/dd].) was read. <br>
 
 *Note: The event log will not print if the user quits without playing a level.*
+
+### Phase 4: Task 3
+
+Refactoring:
+- I would refactor the `Level`, `Level1`, and `KeyboardListener` classes so that they would belong to the `model` package instead, and transfer all UI capabilities to the `DarkGame` class.
+- I would create an abstract way to create new levels, which would be simplified by making the following changes:
+  - A `Level` would ideally have a random number of tiles (within a specified range) that would automatically and randomly join together upon instantiation of the level.
+  - `Tile` would be the only thing that make up the structure of the maze, which would render the `MazeStructure` interface useless.
+    - `Chest` would instead be an item (or something else?) that cannot be picked up.
+    - `Exit` would become an inherent property of a single tile within the level.
+  - To create new levels, one would instantiate a level with a single number (representing the level number) and a number of tiles, items, chests, and an exit would be created from a range that depends on the level number.
+- I would get rid of the `ItemPouch` class, as I think that the `Player` class having its own list of `Items` would be less redundant.
+- The UI would display player movements (e.g. via JLabel) as they happen, instead of only when hitting walls. 
+- The UI would be dark-themed (i.e. black background, light-coloured text and buttons, etc.).
+- Levels that are created from saved data would do so without triggering any `Event`; i.e. the `EventLog` would only show events that the user caused within the current session. 
