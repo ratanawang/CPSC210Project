@@ -69,9 +69,13 @@ public class DarkGame implements ActionListener {
         initializeEverything();
     }
 
-    // EFFECTS: listens for closing of window, then quits application
+    // MODIFIES: this
+    // EFFECTS: add listener for closing of window
     private void addCloseListenerToFrame() {
         frame.addWindowListener(new WindowAdapter() {
+            // MODIFIES: this
+            // EFFECTS: if level exists, prints event log, then quits
+            // otherwise, quit without printing event log
             @Override
             public void windowClosing(WindowEvent e) {
                 if (level != null) {

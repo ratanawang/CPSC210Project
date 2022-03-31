@@ -44,14 +44,15 @@ public class Player {
     }
 
     // REQUIRES: item is not null, and not already in pouch
-    // MODIFIES: this
-    // EFFECTS: adds item to item pouch
+    // MODIFIES: this, EventLog.getInstance()
+    // EFFECTS: adds item to item pouch, and logs this as an event
     public void addItemToPouch(Item i) {
         itemPouch.addItem(i);
         String itemType = i.getClass().getSimpleName();
         EventLog.getInstance().logEvent(new Event(itemType + " added to item pouch."));
     }
 
+    // MODIFIES: EventLog.getInstance()
     // EFFECTS: logs the reading of a clue as an event
     public void readClue(Clue c) {
         String info = c.getInfo();
